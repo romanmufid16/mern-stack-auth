@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../libs/axiosInstance.js";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -20,15 +23,28 @@ const Register = () => {
         password,
       });
       setLoading(false);
-      navigate("/login");
+
+      toast.success("Registration successful! Redirecting to login...", {
+        position: "top-center",
+        autoClose: 3000, 
+      });
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
     } catch (error) {
       setError(error.response ? error.response.data.errors : error.message);
       setLoading(false);
+      toast.error("Registration failed. Please try again.", {
+        position: "top-center",
+        autoClose: 3000,
+      });
     }
   };
 
   return (
     <div className="h-screen font-poppins flex">
+      <ToastContainer />
       <div className="w-full lg:w-1/2 flex justify-center items-center">
         <div className="flex flex-col p-4 max-w-md w-full">
           <span className="mb-10 text-4xl font-semibold">Get Started Now</span>
